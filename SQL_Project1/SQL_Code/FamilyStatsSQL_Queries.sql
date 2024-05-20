@@ -1,3 +1,4 @@
+--PROJECT EXPLANATION
 --Initial Data Exploration
 	--Select entire marriage rate table
 Select * FROM [dbo].[marriage_rate]
