@@ -1,44 +1,9 @@
---PROJECT EXPLANATION: This project was built to create a data source for my Tableau project while also displaying some of my querying abilities in SQl.
---This project investigates trends in marriages and divorces, as rates (out of 1000 people), in total amounts, and as a ratio between marriages and divorces.
---Initial Data Exploration
-	--Select entire marriage rate table
-Select * FROM [dbo].[marriage_rate]
-	--Number of Countries/Entities in Marriage table
-Select COUNT(Entity) FROM [dbo].[marriage_rate]
-	--Average Marriage Rate
+--PURPOSE: To use SQL Queries to generate useful data sources for my Tableau project.
+
+--Average Marriage Rate
 Select AVG([Crude marriage rate (per 1,000 inhabitants)]) FROM [dbo].[marriage_rate]
-	--Select entrie Divorce rate table
-SELECT * FROM [dbo].[divorce_rate]
-	--Number of Countries/Entities in Divorce table
-SELECT COUNT(Entity) FROM [dbo].[divorce_rate]
-	--Average Divorce Rate[dbo].[divorce_rate]
+--Average Divorce Rate[dbo].[divorce_rate]
 SELECT AVG([Crude divorce rate (per 1,000 inhabitants)]) FROM [dbo].[divorce_rate]
-	--Entire Population Table
-SELECT * FROM [dbo].[population$]
-
-	--Search for US stats
-SELECT * FROM [dbo].[marriage_rate]
-WHERE Entity like '%state%'
-SELECT AVG([Crude marriage rate (per 1,000 inhabitants)]) FROM [dbo].[marriage_rate]
-WHERE Entity like '%state%'
-	--Search for UK stats
-SELECT * FROM [dbo].[marriage_rate]
-WHERE Entity like '%united kingdom%'
-
--- Check for world or continent values (Don't want to be double-counting things later on)
-SELECT * FROM [dbo].[marriage_rate]
-WHERE Entity Like '%World%' OR Entity Like '%Europe%' OR Entity Like '%Asia%' OR Entity Like '%Africa%'
-	-- Some redundant values discovered, but their "Code" was always NULL. 
-	--Verifying ability to filter out redundant values by "NULL code" by first finding all entities whose code is NULL
-SELECT Entity, MAX([Crude marriage rate (per 1,000 inhabitants)]) as 'Max Marriage Rate' 
-	FROM [dbo].[marriage_rate]
-	WHERE Code is NULL
-	GROUP BY Entity
-	--Double check the divorce table null codes
-SELECT Entity, MAX([Crude divorce rate (per 1,000 inhabitants)]) as 'Max Divorce Rate' 
-	FROM [dbo].[divorce_rate]
-	WHERE Code is NULL
-	GROUP BY Entity
 
 --Find the year with most recent data for each country, then store it in a temp table for future reference
 SELECT Entity, MAX([Year]) AS 'MaxYear'
@@ -47,31 +12,14 @@ SELECT Entity, MAX([Year]) AS 'MaxYear'
 	GROUP BY Entity
 	ORDER BY Entity
 
-SELECT * FROM #temp
-	ORDER BY Entity
 --Use the temp table to find the most recent marriage rates for each entity, sorted by marriage rate
 SELECT * FROM [dbo].[marriage_rate] T1
 	JOIN #temp
 	ON (T1.Entity = #temp.Entity AND T1.[Year] = #temp.MaxYear)
 	ORDER BY [Crude marriage rate (per 1,000 inhabitants)] desc
 
---While finding the most recent marriage rates by country, I found duplicates in my results. 
---I used these 2 queries to verify that the data had been doubled in the original table, which I further verified in the Excel file.
---I then used them to verify that the problem had been fixed after I made a disctinct copy of the table, removing the duplicates.
-SELECT * FROM [dbo].[marriage_rate]
-	WHERE Entity = 'Antigua and Barbuda' AND [Year] = 1995
-
-SELECT * FROM [dbo].[marriage_rate]
-	ORDER BY Entity, [YEAR]
-	--Repeat the 2nd test on the cleaned up Divorce Table, and on the original Population table 
-SELECT * FROM [dbo].[divorce_rate]
-	ORDER BY Entity, [YEAR]
-
-SELECT * FROM [dbo].[population$]
-	ORDER BY Entity, [YEAR]
-
 -- Use Population table to turn Marriage Rate into # of Marriages and ditto for Divorces
-	-- Make Table with # of Marriages in its own column
+	-- USE CTE to make a table with # of Marriages in its own column
 WITH MarriagePop_CTE as
 (SELECT M.Entity, M.Code, M.[Year], M.[Crude marriage rate (per 1,000 inhabitants)] AS 'Marriage Rate', 
 	[Population (historical estimates)] AS 'Population' 
