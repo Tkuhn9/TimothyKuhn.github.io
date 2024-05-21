@@ -1,4 +1,5 @@
 --PURPOSE: To remove the duplicate data found in both the Marriage Rate and Divorce Rate tables
+
 --Step 1: Make a Copy of the Marriage Rate Table with no duplicates
 SELECT DISTINCT Entity, Code, [Year], [Crude marriage rate (per 1,000 inhabitants)] 
 	INTO marriage_rate
