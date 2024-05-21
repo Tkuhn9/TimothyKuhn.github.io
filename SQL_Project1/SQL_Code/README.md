@@ -7,3 +7,5 @@ This project investigates trends in marriages and divorces, as rates (out of 100
 [Go To Data Cleaning File](https://github.com/Tkuhn9/TimothyKuhn.github.io/blob/main/SQL_Project1/SQL_Code/2.%20Data%20Cleaning.sql)
 
 [Go To Tableau Data Source Creation File](https://github.com/Tkuhn9/TimothyKuhn.github.io/blob/main/SQL_Project1/SQL_Code/3.%20Tableau%20Data%20Source%20Creation.sql)
+
+[Go To Tableau Project](https://public.tableau.com/app/profile/timothy.kuhn/viz/WorldMarriageStatisticsDashboard/MarriageandDivorceDashboard)
