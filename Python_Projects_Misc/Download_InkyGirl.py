@@ -1,5 +1,6 @@
 #! Python3
 #Download all of InkyGirl comics
+# This is a fun comic about writing, and this project is a simple demonstration of web-scraping
 
 #import
 import requests, os, bs4
