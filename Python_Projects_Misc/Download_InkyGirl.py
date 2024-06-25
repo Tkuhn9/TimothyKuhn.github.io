@@ -1,5 +1,6 @@
 #! Python3
 #Download all of InkyGirl comics
+#Used with permission from Debbie Ridpath Ohi at Inkygirl.com.
 # This is a fun comic about writing, and this project is a simple demonstration of web-scraping
 
 #import
